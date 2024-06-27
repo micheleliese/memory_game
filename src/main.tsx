@@ -2,9 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import { CssBaseline } from '@mui/material'
+import { DrawerProvider } from './providers/drawer-provider.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <CssBaseline />
+    <DrawerProvider>
+      <App />
+    </DrawerProvider>
   </React.StrictMode>,
 )
