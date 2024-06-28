@@ -11,12 +11,14 @@ import CustomDrawer from "./components/custom-drawer";
 import Board from "./components/board";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
+import { MemoryCard } from "./interfaces/card";
+import { Player } from "./interfaces/player";
 
 const socket = io("http://localhost:3000");
 
 export default function App() {
-  const [gameBoard, setGameBoard] = useState<Array<any>>([]);
-  const [players, setPlayers] = useState<Array<any>>([]);
+  const [gameBoard, setGameBoard] = useState<Array<MemoryCard>>([]);
+  const [players, setPlayers] = useState<Array<Player>>([]);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [playerName, setPlayerName] = useState<string>("");
 
@@ -44,7 +46,7 @@ export default function App() {
 
     socket.on("cardFlipped", ({ cardIndex, card }) => {
       setGameBoard((prevBoard) => {
-        const newBoard: Array<any> = [...prevBoard];
+        const newBoard = [...prevBoard];
         newBoard[cardIndex] = card;
         return newBoard;
       });
@@ -65,6 +67,7 @@ export default function App() {
   }, []);
 
   const joinGame = () => {
+    console.log("Joining game");
     socket.emit("joinGame", playerName);
     setGameStarted(true);
   };
@@ -72,8 +75,8 @@ export default function App() {
   return gameStarted ? (
     <Box width="100vw" height="100vh" bgcolor="lightgray">
       <Box sx={{ display: "flex" }}>
-        <Board />
-        <CustomDrawer />
+        <Board gameBoard={gameBoard}/>
+        <CustomDrawer players={players}/>
       </Box>
     </Box>
   ) : (

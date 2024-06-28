@@ -1,16 +1,23 @@
 import { Box, Card, Grid } from "@mui/material";
 import CustomAppBar from "./custom-app-bar";
 import { useDrawer } from "../providers/use-drawer";
+import { MemoryCard } from "../interfaces/card";
 
-export default function Board() {
+interface BoardProps {
+  gameBoard: Array<MemoryCard>;
+}
+
+export default function Board({ gameBoard }: BoardProps) {
   const { drawerWidth } = useDrawer();
 
-  const memoryCards = [...Array(18)].map((i) => ({
-    id: i,
-    image: `https://picsum.photos/200/400`,
-    isFlipped: false,
-    isMatched: false,
-  }));
+  // const memoryCards = [...Array(18)].map((i) => ({
+  //   id: i,
+  //   image: `https://picsum.photos/200/400`,
+  //   isFlipped: false,
+  //   isMatched: false,
+  // }));
+
+  const memoryCards = gameBoard;
 
   return (
     <Box
