@@ -14,8 +14,8 @@ export default function CustomDrawer() {
   const drawerContent = (
     <Box bgcolor="white" height="100%" px={3} py={3}>
       <Typography variant="h6">Players</Typography>
-      {users.map((user) => (
-        <Box py={1}>
+      {users.map((user, index) => (
+        <Box key={index} py={1}>
           <Chip
             key={user.id}
             variant="outlined"

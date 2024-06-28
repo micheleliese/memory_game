@@ -27,8 +27,8 @@ export default function Board() {
         alignItems={"center"}
         spacing={2}
       >
-        {memoryCards.map((card) => (
-          <Grid item md={2}>
+        {memoryCards.map((card, index) => (
+          <Grid key={index} item md={2}>
             <Card sx={{ background: "black" }}>
               <img src={card.image} alt="card" height={160} />
             </Card>
