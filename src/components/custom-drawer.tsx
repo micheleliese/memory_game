@@ -9,19 +9,10 @@ interface CustomDrawerProps {
 export default function CustomDrawer({ players }: CustomDrawerProps) {
   const { drawerWidth, mobileOpen, handleDrawerClose, handleDrawerTransitionEnd } = useDrawer();
 
-  // const users = [...Array(10)].map((_, i) => ({
-  //   id: i,
-  //   name: `User ${i}`,
-  //   score: Math.floor(Math.random() * 100),
-  //   color: i === 2 ? "success" : "primary",
-  // }));
-
-  const users = players;
-
   const drawerContent = (
     <Box bgcolor="white" height="100%" px={3} py={3}>
       <Typography variant="h6">Players</Typography>
-      {users.map((user, index) => (
+      {players.map((user, index) => (
         <Box key={index} py={1}>
           <Chip
             key={user.id}
@@ -71,7 +62,7 @@ export default function CustomDrawer({ players }: CustomDrawerProps) {
         onTransitionEnd={handleDrawerTransitionEnd}
         onClose={handleDrawerClose}
         ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
+          keepMounted: true,
         }}
         sx={{
           display: { xs: "block", sm: "none" },

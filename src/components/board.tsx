@@ -10,15 +10,6 @@ interface BoardProps {
 export default function Board({ gameBoard }: BoardProps) {
   const { drawerWidth } = useDrawer();
 
-  // const memoryCards = [...Array(18)].map((i) => ({
-  //   id: i,
-  //   image: `https://picsum.photos/200/400`,
-  //   isFlipped: false,
-  //   isMatched: false,
-  // }));
-
-  const memoryCards = gameBoard;
-
   return (
     <Box
       px={2}
@@ -34,7 +25,7 @@ export default function Board({ gameBoard }: BoardProps) {
         alignItems={"center"}
         spacing={2}
       >
-        {memoryCards.map((card, index) => (
+        {gameBoard.map((card, index) => (
           <Grid key={index} item md={2}>
             <Card sx={{ background: "black" }}>
               <img src={card.image} alt="card" height={160} />
