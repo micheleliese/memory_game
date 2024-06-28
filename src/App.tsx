@@ -24,6 +24,7 @@ export default function App() {
 
   useEffect(() => {
     socket.on("gameJoined", ({ success, gameBoard, players }) => {
+      console.log("Game joined", success);
       if (success) {
         setGameBoard(gameBoard);
         setPlayers(players);
@@ -32,19 +33,23 @@ export default function App() {
     });
 
     socket.on("playerJoined", (players) => {
+      console.log("player joined", players);
       setPlayers(players);
     });
 
     socket.on("startGame", (gameBoard) => {
+      console.log("start game", gameBoard);
       setGameBoard(gameBoard);
       setGameStarted(true);
     });
 
     socket.on("playerLeft", (players) => {
+      console.log("player left", players);
       setPlayers(players);
     });
 
     socket.on("cardFlipped", ({ cardIndex, card }) => {
+      console.log("card flipped", cardIndex, card);
       setGameBoard((prevBoard) => {
         const newBoard = [...prevBoard];
         newBoard[cardIndex] = card;
@@ -53,6 +58,7 @@ export default function App() {
     });
 
     socket.on("gameStopped", () => {
+      console.log("game stopped");
       setGameStarted(false);
     });
 
