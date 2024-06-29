@@ -37,9 +37,9 @@ export default function CustomDrawer({ players }: CustomDrawerProps) {
       aria-label="mailbox folders"
     >
       <Drawer
+        open={mobileOpen}
         anchor="right"
         variant="temporary"
-        open={mobileOpen}
         onTransitionEnd={handleDrawerTransitionEnd}
         onClose={handleDrawerClose}
         ModalProps={{
@@ -53,13 +53,13 @@ export default function CustomDrawer({ players }: CustomDrawerProps) {
         {drawerContent}
       </Drawer>
       <Drawer
+        open
         anchor="right"
         variant="permanent"
         sx={{
           display: { xs: "none", sm: "block" },
           "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
         }}
-        open
       >
         {drawerContent}
       </Drawer>
