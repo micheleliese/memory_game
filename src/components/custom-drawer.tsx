@@ -1,51 +1,32 @@
-import { Avatar, Box, Chip, Drawer, Typography } from "@mui/material";
+import { AppBar, Box, Drawer, Toolbar, Typography } from "@mui/material";
 import { useDrawer } from "../providers/use-drawer";
 import { Player } from "../interfaces/player";
+import PlayerCard from "./player-card";
 
 interface CustomDrawerProps {
   players: Array<Player>;
 }
 
 export default function CustomDrawer({ players }: CustomDrawerProps) {
-  const { drawerWidth, mobileOpen, handleDrawerClose, handleDrawerTransitionEnd } = useDrawer();
+  const {
+    drawerWidth,
+    mobileOpen,
+    handleDrawerClose,
+    handleDrawerTransitionEnd,
+  } = useDrawer();
 
   const drawerContent = (
-    <Box bgcolor="white" height="100%" px={3} py={3}>
-      <Typography variant="h6">Players</Typography>
-      {players.map((user, index) => (
-        <Box key={index} py={1}>
-          <Chip
-            key={user.id}
-            variant="outlined"
-            color={
-              user.color as
-                | "success"
-                | "primary"
-                | "default"
-                | "secondary"
-                | "error"
-                | "info"
-                | "warning"
-            }
-            avatar={<Avatar>{user.name[0]}</Avatar>}
-            label={
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  width: "100%",
-                }}
-              >
-                <Typography variant="body1">{user.name}</Typography>
-                <Typography variant="body2">{user.score}</Typography>
-              </Box>
-            }
-            sx={{ width: "100%", padding: "0 8px" }}
-          />
-        </Box>
-      ))}
+    <Box bgcolor="white" height="100%">
+      <AppBar position="sticky" color="transparent" elevation={1}>
+        <Toolbar>
+          <Typography variant="h5">Players</Typography>
+        </Toolbar>
+      </AppBar>
+      <Box px={2} py={2}>
+        {players.map((player, index) => (
+          <PlayerCard key={index} player={player} />
+        ))}
+      </Box>
     </Box>
   );
 
