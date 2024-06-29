@@ -8,9 +8,12 @@ export interface SocketContextProps {
   gameBoard: Array<MemoryCard>;
   players: Array<Player>;
   gameStarted: boolean;
+  ready: boolean;
+  isHost: boolean;
   playerName: string;
   setPlayerName: (name: string) => void;
   joinGame: () => void;
+  startGame: () => void;
 }
 
 export const SocketContext = createContext<SocketContextProps | undefined>(undefined);
@@ -19,20 +22,25 @@ interface SocketProviderProps {
   children: ReactNode;
 }
 
+const socket = io("http://localhost:3000");
+
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
-  const socket = io("http://localhost:3000");
   const [gameBoard, setGameBoard] = useState<Array<MemoryCard>>([]);
   const [players, setPlayers] = useState<Array<Player>>([]);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [ready, setReady] = useState<boolean>(false);
+  const [isHost, setIsHost] = useState<boolean>(false);
   const [playerName, setPlayerName] = useState<string>("");
 
   useEffect(() => {
-    socket.on("gameJoined", ({ success, gameBoard, players }) => {
+    socket.on("gameJoined", ({ success, message }) => {
       console.log("Game joined", success);
       if (success) {
-        setGameBoard(gameBoard);
-        setPlayers(players);
-        setGameStarted(true);
+        console.log("Game joined successfully");
+        setReady(true);
+      } else {
+        alert(message);
+        setReady(false);
       }
     });
 
@@ -41,10 +49,18 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       setPlayers(players);
     });
 
-    socket.on("startGame", (gameBoard) => {
-      console.log("start game", gameBoard);
+    socket.on("startedGame", (gameBoard) => {
+      console.log("started game", gameBoard);
       setGameBoard(gameBoard);
       setGameStarted(true);
+    });
+
+    socket.on("host", (host) => {
+      console.log("host", host);
+      console.log("socket id", socket.id);
+      if (host === socket.id) {
+        setIsHost(true);
+      }
     });
 
     socket.on("playerLeft", (players) => {
@@ -83,18 +99,25 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     }
     console.log("Joining game");
     socket.emit("joinGame", playerName);
-    setGameStarted(true);
   };
+
+  const startGame = () => {
+    console.log("Starting game");
+    socket.emit("startGame");
+  }
   
   return (
     <SocketContext.Provider
       value={{
         gameBoard,
+        isHost,
         players,
         gameStarted,
+        ready,
         playerName,
         setPlayerName,
         joinGame,
+        startGame,
       }}
     >
       {children}
