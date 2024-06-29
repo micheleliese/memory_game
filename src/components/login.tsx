@@ -7,13 +7,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useSocket } from "../providers/use-socket";
 
-interface LoginProps {
-  setPlayerName: (name: string) => void;
-  joinGame: () => void;
-}
+export default function Login() {
+  const { setPlayerName, joinGame } = useSocket();
 
-export default function Login({ setPlayerName, joinGame }: LoginProps) {
   return (
     <>
       <Box
