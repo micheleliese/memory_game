@@ -1,8 +1,9 @@
-import { Box, Button, Card, Grid, Typography } from "@mui/material";
+import { Box, Button, Card, CircularProgress, Grid, Typography } from "@mui/material";
 import CustomAppBar from "./custom-app-bar";
 import { useDrawer } from "../providers/use-drawer";
 import { MemoryCard } from "../interfaces/card";
 import { useSocket } from "../providers/use-socket";
+import { PlayArrow } from "@mui/icons-material";
 
 interface BoardProps {
   gameBoard: Array<MemoryCard>;
@@ -47,8 +48,15 @@ export default function Board({ gameBoard }: BoardProps) {
               justifyContent="center"
             >
               <Grid item>
-                <Typography variant="h4" textAlign="center">
-                  {players.length} players waiting
+                <Box pt={5}>
+                  <Typography variant="h5" textAlign="center">
+                    Host the game
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item>
+                <Typography variant="h6" textAlign="center">
+                  <b>{players.length} players</b> waiting
                 </Typography>
               </Grid>
               <Grid item>
@@ -57,8 +65,11 @@ export default function Board({ gameBoard }: BoardProps) {
                   size="large"
                   onClick={startGame}
                   fullWidth
+                  endIcon={
+                    <PlayArrow />
+                  }
                 >
-                  Entrar
+                  Start game
                 </Button>
               </Grid>
             </Grid>
@@ -66,7 +77,17 @@ export default function Board({ gameBoard }: BoardProps) {
         </Grid>
       );
     } else {
-      return <>Waiting for host to start the game, {players.length} players waiting</>;
+      return <Box display="flex" flexDirection="column" alignItems="center">
+        <Box height={48} />
+        <CircularProgress />
+        <Box height={16} />
+        <Typography variant="h6">
+          Waiting for host to start the game
+        </Typography>
+        <Typography variant="h6">
+          <b>{players.length} players</b> waiting...
+        </Typography>
+      </Box>
     }
   };
   return (
