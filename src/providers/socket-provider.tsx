@@ -3,6 +3,7 @@ import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { MemoryCard } from "../interfaces/card";
 import { Player } from "../interfaces/player";
+import { Config } from "../config";
 
 export interface SocketContextProps {
   gameBoard: Array<MemoryCard>;
@@ -22,7 +23,7 @@ interface SocketProviderProps {
   children: ReactNode;
 }
 
-const socket = io("http://localhost:3000");
+const socket = io(Config.API_URL);
 
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [gameBoard, setGameBoard] = useState<Array<MemoryCard>>([]);
