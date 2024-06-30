@@ -1,19 +1,11 @@
 import { AppBar, Box, Drawer, Toolbar, Typography } from "@mui/material";
 import { useDrawer } from "../providers/use-drawer";
-import { Player } from "../interfaces/player";
 import PlayerCard from "./player-card";
+import { useSocket } from "../providers/use-socket";
 
-interface CustomDrawerProps {
-  players: Array<Player>;
-}
-
-export default function CustomDrawer({ players }: CustomDrawerProps) {
-  const {
-    drawerWidth,
-    mobileOpen,
-    handleDrawerClose,
-    handleDrawerTransitionEnd,
-  } = useDrawer();
+export default function CustomDrawer() {
+  const { drawerWidth, mobileOpen, handleDrawerClose, handleDrawerTransitionEnd } = useDrawer();
+  const { players } = useSocket();
 
   const drawerContent = (
     <Box bgcolor="white" height="100%">

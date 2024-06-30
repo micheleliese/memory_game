@@ -1,17 +1,12 @@
 import { Box, Button, Card, CircularProgress, Grid, Typography } from "@mui/material";
 import CustomAppBar from "./custom-app-bar";
 import { useDrawer } from "../providers/use-drawer";
-import { MemoryCard } from "../interfaces/card";
 import { useSocket } from "../providers/use-socket";
 import { PlayArrow } from "@mui/icons-material";
 
-interface BoardProps {
-  gameBoard: Array<MemoryCard>;
-}
-
-export default function Board({ gameBoard }: BoardProps) {
+export default function Board() {
   const { drawerWidth } = useDrawer();
-  const { isHost, gameStarted, players, startGame } = useSocket();
+  const { isHost, gameStarted, gameBoard, players, startGame } = useSocket();
 
   const Main = () => {
     if (gameStarted) {

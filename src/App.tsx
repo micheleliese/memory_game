@@ -5,14 +5,14 @@ import Login from "./components/login";
 import { useSocket } from "./providers/use-socket";
 
 export default function App() {
-  const { gameBoard, ready, players } = useSocket();
+  const { ready } = useSocket();
 
   return (
     <Box width="100vw" height="100vh" bgcolor="lightgray">
       {ready ? (
         <Box sx={{ display: "flex" }}>
-          <Board gameBoard={gameBoard} />
-          <CustomDrawer players={players} />
+          <Board />
+          <CustomDrawer />
         </Box>
       ) : (
         <Login/>
