@@ -1,6 +1,6 @@
 export interface MemoryCard {
   id: number;
-  image: string
+  imageId: string
   isFlipped: boolean;
   isMatched: boolean;
 }
