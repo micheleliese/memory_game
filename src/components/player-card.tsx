@@ -11,16 +11,7 @@ export default function PlayerCard({ player }: PlayerCardProps) {
       <Chip
         key={player.id}
         variant="outlined"
-        color={
-          player.color as
-            | "success"
-            | "primary"
-            | "default"
-            | "secondary"
-            | "error"
-            | "info"
-            | "warning"
-        }
+        color={ player.turn ? "primary" : "default" }
         avatar={<Avatar>{player.name[0]}</Avatar>}
         label={
           <Box
