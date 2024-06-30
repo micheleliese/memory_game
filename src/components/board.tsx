@@ -6,7 +6,7 @@ import { PlayArrow } from "@mui/icons-material";
 
 export default function Board() {
   const { drawerWidth } = useDrawer();
-  const { isHost, gameStarted, gameBoard, players, startGame } = useSocket();
+  const { isHost, gameStarted, gameBoard, players, startGame, flipCard } = useSocket();
 
   const Main = () => {
     if (gameStarted) {
@@ -19,7 +19,7 @@ export default function Board() {
           spacing={2}
         >
           {gameBoard.map((card, index) => (
-            <Grid key={index} item md={2}>
+            <Grid key={index} item md={2} onClick={() => flipCard(index)}>
               <Card sx={{ background: "black" }}>
                 <img src={card.image} alt="card" height={160} />
               </Card>
@@ -51,7 +51,7 @@ export default function Board() {
               </Grid>
               <Grid item>
                 <Typography variant="h6" textAlign="center">
-                  <b>{players.length} players</b> waiting
+                  {players.length === 1 ? "only you" : `You and ${players.length - 1} others`} are in the game
                 </Typography>
               </Grid>
               <Grid item>
@@ -60,9 +60,8 @@ export default function Board() {
                   size="large"
                   onClick={startGame}
                   fullWidth
-                  endIcon={
-                    <PlayArrow />
-                  }
+                  endIcon={<PlayArrow />}
+                  disabled={players.length < 2}
                 >
                   Start game
                 </Button>
@@ -80,7 +79,7 @@ export default function Board() {
           Waiting for host to start the game
         </Typography>
         <Typography variant="h6">
-          <b>{players.length} players</b> waiting...
+          You and {players.length - 1} others are in the game
         </Typography>
       </Box>
     }

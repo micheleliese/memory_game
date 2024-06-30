@@ -15,6 +15,8 @@ export interface SocketContextProps {
   setPlayerName: (name: string) => void;
   joinGame: () => void;
   startGame: () => void;
+  isMyTurn: () => boolean;
+  flipCard: (index: number) => void;
 }
 
 export const SocketContext = createContext<SocketContextProps | undefined>(undefined);
@@ -45,7 +47,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       }
     });
 
-    socket.on("playerJoined", (players) => {
+    socket.on("players", (players) => {
       console.log("player joined", players);
       setPlayers(players);
     });
@@ -85,7 +87,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
     return () => {
       socket.off("gameJoined");
-      socket.off("playerJoined");
+      socket.off("players");
       socket.off("startGame");
       socket.off("playerLeft");
       socket.off("cardFlipped");
@@ -106,6 +108,16 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     console.log("Starting game");
     socket.emit("startGame");
   }
+
+  const isMyTurn = () => {
+    return players.length > 0 && players[0].id === socket.id;
+  }
+
+  const flipCard = (index: number) => {
+    if (isMyTurn()) {
+      socket.emit("flipCard", index);
+    }
+  }
   
   return (
     <SocketContext.Provider
@@ -119,6 +131,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         setPlayerName,
         joinGame,
         startGame,
+        isMyTurn,
+        flipCard,
       }}
     >
       {children}
