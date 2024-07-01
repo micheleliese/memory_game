@@ -1,5 +1,5 @@
 import { Menu } from "@mui/icons-material";
-import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Card, IconButton, Toolbar, Typography } from "@mui/material";
 import { useDrawer } from "../providers/use-drawer";
 import { useSocket } from "../providers/use-socket";
 
@@ -23,15 +23,19 @@ export default function CustomAppBar() {
             width: "100%",
           }}
         >
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6">
             Memory Game
           </Typography>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6">
             {myUser()?.name}
           </Typography>
-          <Typography variant="h6" noWrap component="div">
-            {isMyTurn() ? "Your turn" : currentUser()?.name + "'s turn"}
-          </Typography>
+          <Card>
+            <Box px={3} py={1}>
+              <Typography variant="h6" fontWeight='bold' color={isMyTurn() ? "green" : "inherit"}>
+                {isMyTurn() ? "Your turn" : currentUser()?.name + "'s turn"}
+              </Typography>
+            </Box>
+          </Card>
           <IconButton
             color="inherit"
             aria-label="open drawer"
