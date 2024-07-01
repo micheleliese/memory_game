@@ -21,7 +21,7 @@ export default function Board() {
           {gameBoard.map((card, index) => (
             <Grid key={index} item md={2} onClick={() => flipCard(index)}>
               <Card sx={{ background: "black" }}>
-                <img src={`src/assets/cards/${card.imageId}.jpeg`} alt="card" height={160} />
+                <img src={`src/assets/cards/${card.imageId}.png`} alt="card" height={160} />
               </Card>
             </Grid>
           ))}
