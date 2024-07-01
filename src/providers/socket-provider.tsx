@@ -17,6 +17,8 @@ export interface SocketContextProps {
   startGame: () => void;
   isMyTurn: () => boolean;
   flipCard: (index: number) => void;
+  currentUser: () => Player | undefined;
+  myUser(): Player | undefined;
 }
 
 export const SocketContext = createContext<SocketContextProps | undefined>(undefined);
@@ -109,13 +111,26 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     socket.emit("startGame");
   }
 
+  const currentUser = () => players.find((player) => player.turn === true);
+
+  const myUser = () => players.find((player) => player.id === socket.id);
+
   const isMyTurn = () => {
-    return players.length > 0 && players[0].id === socket.id;
+    const user = myUser();
+    if (user?.turn) {
+      console.log("It's my turn");
+      return true;
+    } else {
+      return false;
+    }
   }
 
   const flipCard = (index: number) => {
     if (isMyTurn()) {
+      console.log("Flipping card", index);
       socket.emit("flipCard", index);
+    } else {
+      console.log("It's not my turn to flip a card");
     }
   }
   
@@ -133,6 +148,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         startGame,
         isMyTurn,
         flipCard,
+        currentUser,
+        myUser
       }}
     >
       {children}
