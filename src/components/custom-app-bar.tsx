@@ -1,11 +1,19 @@
 import { Menu } from "@mui/icons-material";
-import { AppBar, Box, Card, IconButton, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Card,
+  CircularProgress,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { useDrawer } from "../providers/use-drawer";
 import { useSocket } from "../providers/use-socket";
 
 export default function CustomAppBar() {
   const { handleDrawerToggle, drawerWidth } = useDrawer();
-  const { myUser, isMyTurn, currentUser } = useSocket();
+  const { myUser, isMyTurn, currentUser, gameStarted } = useSocket();
   return (
     <AppBar
       position="fixed"
@@ -23,19 +31,21 @@ export default function CustomAppBar() {
             width: "100%",
           }}
         >
-          <Typography variant="h6">
-            Memory Game
-          </Typography>
-          <Typography variant="h6">
-            {myUser()?.name}
-          </Typography>
-          <Card>
-            <Box px={3} py={1}>
-              <Typography variant="h6" fontWeight='bold' color={isMyTurn() ? "green" : "inherit"}>
-                {isMyTurn() ? "Your turn" : currentUser()?.name + "'s turn"}
-              </Typography>
-            </Box>
-          </Card>
+          <Typography variant="h5" fontWeight='bold'>Memory Game</Typography>
+          <Typography variant="h6" fontWeight='bold'>{myUser()?.name}</Typography>
+          {gameStarted ? (
+            <Card>
+              <Box px={3} py={1}>
+                <Typography
+                  variant="h6"
+                  fontWeight="bold"
+                  color={isMyTurn() ? "green" : "inherit"}
+                >
+                  {isMyTurn() ? "Your turn" : currentUser()?.name + "'s turn"}
+                </Typography>
+              </Box>
+            </Card>
+          ) : <CircularProgress sx={{ color: 'white'}}/>}
           <IconButton
             color="inherit"
             aria-label="open drawer"

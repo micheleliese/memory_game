@@ -73,13 +73,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       setPlayers(players);
     });
 
-    socket.on("cardFlipped", ({ cardIndex, card }) => {
-      console.log("card flipped", cardIndex, card);
-      setGameBoard((prevBoard) => {
-        const newBoard = [...prevBoard];
-        newBoard[cardIndex] = card;
-        return newBoard;
-      });
+    socket.on("cardFlipped", ({ gameBoard, matched }) => {
+      alert(matched ? "Matched" : "Not matched");
+      setGameBoard(gameBoard);
     });
 
     socket.on("gameStopped", () => {
@@ -118,7 +114,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const isMyTurn = () => {
     const user = myUser();
     if (user?.turn) {
-      console.log("It's my turn");
       return true;
     } else {
       return false;
