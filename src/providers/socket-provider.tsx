@@ -36,6 +36,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [ready, setReady] = useState<boolean>(false);
   const [isHost, setIsHost] = useState<boolean>(false);
   const [playerName, setPlayerName] = useState<string>("");
+  const [cardsFlipped, setCardsFlipped] = useState<number>(0);
 
   useEffect(() => {
     socket.on("gameJoined", ({ success, message }) => {
@@ -52,6 +53,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     socket.on("players", (players) => {
       console.log("player joined", players);
       setPlayers(players);
+      setCardsFlipped(0);
     });
 
     socket.on("startedGame", (gameBoard) => {
@@ -74,7 +76,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     });
 
     socket.on("cardFlipped", ({ gameBoard, matched }) => {
-      alert(matched ? "Matched" : "Not matched");
+      // alert(matched ? "Matched" : "Not matched");
+      console.log(matched ? "Matched" : "Not matched");
       setGameBoard(gameBoard);
     });
 
@@ -121,8 +124,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   }
 
   const flipCard = (index: number) => {
-    if (isMyTurn()) {
+    if (isMyTurn() && cardsFlipped < 2) {
       console.log("Flipping card", index);
+      setCardsFlipped(cardsFlipped + 1);
       socket.emit("flipCard", index);
     } else {
       console.log("It's not my turn to flip a card");
