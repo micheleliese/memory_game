@@ -99,10 +99,13 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     return () => {
       socket.off("gameJoined");
       socket.off("players");
-      socket.off("startGame");
+      socket.off("startedGame");
+      socket.off("host");
       socket.off("playerLeft");
       socket.off("cardFlipped");
       socket.off("gameStopped");
+      socket.off("gameTied");
+      socket.off("gameWon");
     };
   }, []);
 
