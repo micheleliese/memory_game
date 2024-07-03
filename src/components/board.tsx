@@ -1,8 +1,15 @@
-import { Box, Button, Card, CircularProgress, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Typography,
+} from "@mui/material";
 import CustomAppBar from "./custom-app-bar";
 import { useDrawer } from "../providers/use-drawer";
 import { useSocket } from "../providers/use-socket";
 import { PlayArrow } from "@mui/icons-material";
+import GameCard from "./game-card";
 
 export default function Board() {
   const { drawerWidth } = useDrawer();
@@ -19,11 +26,7 @@ export default function Board() {
           spacing={2}
         >
           {gameBoard.map((card, index) => (
-            <Grid key={index} item md={2} onClick={() => flipCard(index)}>
-              <Card sx={{ background: "black" }}>
-                {card.isFlipped ? <img src={`src/assets/cards/${card.imageId}.png`} alt="card" height={160} /> : <Box height={160} />}
-              </Card>
-            </Grid>
+            <GameCard key={index} card={card} onClick={() => flipCard(index)} />
           ))}
         </Grid>
       );
@@ -51,7 +54,10 @@ export default function Board() {
               </Grid>
               <Grid item>
                 <Typography variant="h6" textAlign="center">
-                  {players.length === 1 ? "only you" : `You and ${players.length - 1} others`} are in the game
+                  {players.length === 1
+                    ? "only you"
+                    : `You and ${players.length - 1} others`}{" "}
+                  are in the game
                 </Typography>
               </Grid>
               <Grid item>
@@ -71,17 +77,19 @@ export default function Board() {
         </Grid>
       );
     } else {
-      return <Box display="flex" flexDirection="column" alignItems="center">
-        <Box height={48} />
-        <CircularProgress />
-        <Box height={16} />
-        <Typography variant="h6">
-          Waiting for host to start the game
-        </Typography>
-        <Typography variant="h6">
-          You and {players.length - 1} others are in the game
-        </Typography>
-      </Box>
+      return (
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <Box height={48} />
+          <CircularProgress />
+          <Box height={16} />
+          <Typography variant="h6">
+            Waiting for host to start the game
+          </Typography>
+          <Typography variant="h6">
+            You and {players.length - 1} others are in the game
+          </Typography>
+        </Box>
+      );
     }
   };
   return (
