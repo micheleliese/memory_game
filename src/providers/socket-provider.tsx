@@ -86,6 +86,16 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       setGameStarted(false);
     });
 
+    socket.on("gameTied", (duplicates) => {
+      console.log("game tied", duplicates);
+      alert(`Game tied between ${duplicates.map((player: Player) => player.name).join(", ")}`)
+    });
+
+    socket.on("gameWon", (winner) => {
+      console.log(`Game won by ${winner.name}`);
+      alert(`Game won by ${winner.name}`);
+    });
+
     return () => {
       socket.off("gameJoined");
       socket.off("players");
@@ -124,7 +134,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   }
 
   const flipCard = (index: number) => {
-    if (isMyTurn() && cardsFlipped < 2) {
+    if (isMyTurn() && cardsFlipped < 2 && !gameBoard[index].isFlipped) {
       console.log("Flipping card", index);
       setCardsFlipped(cardsFlipped + 1);
       socket.emit("flipCard", index);
