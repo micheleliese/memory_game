@@ -80,6 +80,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     socket.on("gameStopped", () => {
       enqueueSnackbar("Jogo Encerrado", { variant: "error" });
       setGameStarted(false);
+      setReady(false);
     });
 
     socket.on("gameTied", (duplicates) => {
