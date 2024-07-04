@@ -1,3 +1,4 @@
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { Menu } from "@mui/icons-material";
 import {
   AppBar,
@@ -14,6 +15,8 @@ import { useSocket } from "../providers/use-socket";
 export default function CustomAppBar() {
   const { handleDrawerToggle, drawerWidth } = useDrawer();
   const { myUser, isMyTurn, currentUser, gameStarted } = useSocket();
+  const matches = useMediaQuery('(max-width:600px)');
+  
   return (
     <AppBar
       position="fixed"
@@ -31,13 +34,13 @@ export default function CustomAppBar() {
             width: "100%",
           }}
         >
-          <Typography variant="h5" fontWeight='bold'>Memory Game</Typography>
-          <Typography variant="h6" fontWeight='bold'>{myUser()?.name}</Typography>
+          <Typography variant={matches ? "body1" : "h6"} fontWeight='bold'>Memory Game</Typography>
+          <Typography variant={matches ? "body1" : "h6"} fontWeight='bold'>{myUser()?.name}</Typography>
           {gameStarted ? (
             <Card>
               <Box px={3} py={1}>
                 <Typography
-                  variant="h6"
+                  variant={matches ? "body1" : "h6"}
                   fontWeight="bold"
                   color={isMyTurn() ? "green" : "inherit"}
                 >

@@ -102,7 +102,6 @@ export default function Board() {
       }}
     >
       <CustomAppBar />
-
       <Box height={64} />
       <Main />
     </Box>
