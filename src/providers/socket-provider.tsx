@@ -53,6 +53,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     });
 
     socket.on("players", (players) => {
+      const isHost = players.find((player: Player) => player.id === socket.id)?.isHost;
+      setIsHost(isHost);
       setPlayers(players);
       setCardsFlipped(0);
     });
@@ -61,14 +63,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       enqueueSnackbar("Jogo Iniciado", { variant: "info" });
       setGameBoard(gameBoard);
       setGameStarted(true);
-    });
-
-    socket.on("host", (host) => {
-      console.log("host", host);
-      console.log("socket id", socket.id);
-      if (host === socket.id) {
-        setIsHost(true);
-      }
     });
 
     socket.on("playerLeft", (players) => {
@@ -127,14 +121,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
   const myUser = () => players.find((player) => player.id === socket.id);
 
-  const isMyTurn = () => {
-    const user = myUser();
-    if (user?.turn) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  const isMyTurn = () => myUser()?.turn || false;
 
   const flipCard = (index: number) => {
     if (isMyTurn() && cardsFlipped < 2 && !gameBoard[index].isFlipped) {

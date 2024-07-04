@@ -42,16 +42,16 @@ export default function Board() {
               <Grid item>
                 <Box pt={5}>
                   <Typography variant="h5" textAlign="center">
-                    Host the game
+                    Anfitrião do Jogo
                   </Typography>
                 </Box>
               </Grid>
               <Grid item>
                 <Typography variant="h6" textAlign="center">
                   {players.length === 1
-                    ? "only you"
-                    : `You and ${players.length - 1} others`}{" "}
-                  are in the game
+                    ? "Apenas você"
+                    : `Você e mais ${players.length - 1} jogadores`}
+                  estão no jogo
                 </Typography>
               </Grid>
               <Grid item>
@@ -77,10 +77,10 @@ export default function Board() {
           <CircularProgress />
           <Box height={16} />
           <Typography variant="h6">
-            Waiting for host to start the game
+            Aguardando o anfitrião iniciar o jogo
           </Typography>
           <Typography variant="h6">
-            You and {players.length - 1} others are in the game
+            Você e mais {players.length - 1} jogadores estão no jogo
           </Typography>
         </Box>
       );

@@ -3,4 +3,5 @@ export interface Player {
   name: string;
   score: number;
   turn: boolean;
+  isHost: boolean;
 }
