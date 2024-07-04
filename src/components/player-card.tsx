@@ -2,7 +2,7 @@ import { Avatar, Box, Chip, Typography } from "@mui/material";
 import { Player } from "../interfaces/player";
 
 interface PlayerCardProps {
-  player: Player
+  player: Player;
 }
 
 export default function PlayerCard({ player }: PlayerCardProps) {
@@ -10,9 +10,24 @@ export default function PlayerCard({ player }: PlayerCardProps) {
     <Box py={1}>
       <Chip
         key={player.id}
+        sx={{
+          width: "100%",
+          padding: "0 8px",
+          color: player.turn ? "deeppink" : "default",
+          borderColor: player.turn ? "deeppink" : "default",
+        }}
         variant="outlined"
-        color={ player.turn ? "primary" : "default" }
-        avatar={<Avatar>{player.name[0]}</Avatar>}
+        avatar={
+          <Avatar
+            sx={{
+              backgroundColor: player.turn ? "deeppink" : "default",
+            }}
+          >
+          <Typography color={"white"}>
+            {player.name[0]}
+          </Typography>
+          </Avatar>
+        }
         label={
           <Box
             px={3}
@@ -31,7 +46,6 @@ export default function PlayerCard({ player }: PlayerCardProps) {
             </Typography>
           </Box>
         }
-        sx={{ width: "100%", padding: "0 8px" }}
       />
     </Box>
   );
