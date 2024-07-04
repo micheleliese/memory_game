@@ -23,7 +23,7 @@ export default function PlayerCard({ player }: PlayerCardProps) {
               backgroundColor: player.turn ? "deeppink" : "default",
             }}
           >
-          <Typography color={"white"}>
+          <Typography color={"white"} fontWeight={player.turn ? "bold" : "w100"}>
             {player.name[0]}
           </Typography>
           </Avatar>
@@ -39,7 +39,7 @@ export default function PlayerCard({ player }: PlayerCardProps) {
               width: "100%",
             }}
           >
-            <Typography variant="body1">{player.name}</Typography>
+            <Typography variant="body1" fontWeight={player.turn ? "bold" : "w100"}>{player.name}</Typography>
             <Box width={24} />
             <Typography variant="body1" fontWeight={"bold"}>
               {player.score}

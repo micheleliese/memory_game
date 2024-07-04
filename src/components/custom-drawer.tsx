@@ -11,7 +11,7 @@ export default function CustomDrawer() {
     <Box bgcolor="white" height="100%">
       <AppBar position="sticky" color="transparent" elevation={1}>
         <Toolbar>
-          <Typography variant="h5">Players</Typography>
+          <Typography variant="h5">Jogadores</Typography>
         </Toolbar>
       </AppBar>
       <Box px={2} py={2}>

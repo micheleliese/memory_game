@@ -23,6 +23,7 @@ export default function CustomAppBar() {
       sx={{
         width: { sm: `calc(100% - ${drawerWidth}px)` },
         mr: { sm: `${drawerWidth}px` },
+        backgroundColor: "deeppink"
       }}
     >
       <Toolbar>
@@ -34,17 +35,19 @@ export default function CustomAppBar() {
             width: "100%",
           }}
         >
-          <Typography variant={matches ? "body1" : "h6"} fontWeight='bold'>Memory Game</Typography>
-          <Typography variant={matches ? "body1" : "h6"} fontWeight='bold'>{myUser()?.name}</Typography>
+          <Typography variant={matches ? "body1" : "h6"} fontWeight='bold'>Jogo da Memória</Typography>
+          <Typography variant={matches ? "body1" : "h6"} fontWeight='bold' color='white'>{myUser()?.name}</Typography>
           {gameStarted ? (
-            <Card>
+            <Card sx={{
+              backgroundColor: isMyTurn() ? "lightgreen" : "white"
+            }}>
               <Box px={3} py={1}>
                 <Typography
                   variant={matches ? "body1" : "h6"}
                   fontWeight="bold"
                   color={isMyTurn() ? "green" : "inherit"}
                 >
-                  {isMyTurn() ? "Your turn" : currentUser()?.name + "'s turn"}
+                  {isMyTurn() ? "Sua vez!" : `Vez de ${currentUser()?.name}`}
                 </Typography>
               </Box>
             </Card>
