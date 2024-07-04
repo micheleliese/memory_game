@@ -4,6 +4,7 @@ import { io } from "socket.io-client";
 import { MemoryCard } from "../interfaces/card";
 import { Player } from "../interfaces/player";
 import { Config } from "../config";
+import { useSnackbar } from "notistack";
 
 export interface SocketContextProps {
   gameBoard: Array<MemoryCard>;
@@ -37,6 +38,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [isHost, setIsHost] = useState<boolean>(false);
   const [playerName, setPlayerName] = useState<string>("");
   const [cardsFlipped, setCardsFlipped] = useState<number>(0);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     socket.on("gameJoined", ({ success, message }) => {
@@ -51,13 +53,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     });
 
     socket.on("players", (players) => {
-      console.log("player joined", players);
       setPlayers(players);
       setCardsFlipped(0);
     });
 
     socket.on("startedGame", (gameBoard) => {
-      console.log("started game", gameBoard);
+      enqueueSnackbar("Jogo Iniciado", { variant: "info" });
       setGameBoard(gameBoard);
       setGameStarted(true);
     });
@@ -71,29 +72,28 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     });
 
     socket.on("playerLeft", (players) => {
-      console.log("player left", players);
+      enqueueSnackbar("Um jogador saiu", { variant: "warning" });
       setPlayers(players);
     });
 
-    socket.on("cardFlipped", ({ gameBoard, matched }) => {
-      // alert(matched ? "Matched" : "Not matched");
-      console.log(matched ? "Matched" : "Not matched");
+    socket.on("cardFlipped", ({ gameBoard, message, variant }) => {
+      if (message) {
+        enqueueSnackbar(message,  { variant: variant });
+      }
       setGameBoard(gameBoard);
     });
 
     socket.on("gameStopped", () => {
-      console.log("game stopped");
+      enqueueSnackbar("Jogo Encerrado", { variant: "error" });
       setGameStarted(false);
     });
 
     socket.on("gameTied", (duplicates) => {
-      console.log("game tied", duplicates);
-      alert(`Game tied between ${duplicates.map((player: Player) => player.name).join(", ")}`)
+      enqueueSnackbar(`Jogo Empatado entre ${duplicates.map((player: Player) => player.name).join(", ")}`,  { variant: "info" });
     });
 
     socket.on("gameWon", (winner) => {
-      console.log(`Game won by ${winner.name}`);
-      alert(`Game won by ${winner.name}`);
+      enqueueSnackbar(`Jogo ganho por ${winner.name}`, { variant: "success" });
     });
 
     return () => {
@@ -111,7 +111,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
   const joinGame = () => {
     if (!playerName) {
-      alert("Please enter a player name");
+      enqueueSnackbar("Por favor digite seu nome", { variant: "error" });
       return;
     }
     console.log("Joining game");
@@ -138,11 +138,10 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
   const flipCard = (index: number) => {
     if (isMyTurn() && cardsFlipped < 2 && !gameBoard[index].isFlipped) {
-      console.log("Flipping card", index);
       setCardsFlipped(cardsFlipped + 1);
       socket.emit("flipCard", index);
     } else {
-      console.log("It's not my turn to flip a card");
+      enqueueSnackbar("Não é sua vez de virar uma carta", { variant: "warning" });
     }
   }
   
