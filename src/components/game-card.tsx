@@ -1,4 +1,4 @@
-import { Box, Card, Grid } from "@mui/material";
+import { Card, CardMedia, Grid } from "@mui/material";
 import { MemoryCard } from "../interfaces/card";
 
 interface GameCardProps {
@@ -9,15 +9,21 @@ interface GameCardProps {
 export default function GameCard({ card, onClick }: GameCardProps) {
   return (
     <Grid item md={2} xs={6} onClick={onClick}>
-      <Card sx={{ background: "black" }}>
+      <Card sx={{ borderRadius: 5 }}>
         {card.isFlipped ? (
-          <img
-            src={`src/assets/cards/${card.imageId}.png`}
-            alt="card"
-            height={256}
+          <CardMedia
+            component="img"
+            height="100%"
+            image={`src/assets/cards/${card.imageId}.png`}
+            alt={card.imageId}
           />
         ) : (
-          <Box height={256} minWidth={20} />
+            <CardMedia
+                component="img"
+                height="100%"
+                image={`src/assets/cards/backcard.jpg`}
+                alt='backcard'
+            />
         )}
       </Card>
     </Grid>

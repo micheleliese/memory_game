@@ -8,7 +8,7 @@ export default function App() {
   const { ready } = useSocket();
 
   return (
-    <Box width="100vw" height="100vh" bgcolor="lightgray">
+    <Box width="100vw" height="100vh">
       {ready ? (
         <Box sx={{ display: "flex" }}>
           <Board />

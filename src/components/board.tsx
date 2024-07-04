@@ -1,10 +1,4 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import CustomAppBar from "./custom-app-bar";
 import { useDrawer } from "../providers/use-drawer";
 import { useSocket } from "../providers/use-socket";
@@ -13,7 +7,8 @@ import GameCard from "./game-card";
 
 export default function Board() {
   const { drawerWidth } = useDrawer();
-  const { isHost, gameStarted, gameBoard, players, startGame, flipCard } = useSocket();
+  const { isHost, gameStarted, gameBoard, players, startGame, flipCard } =
+    useSocket();
 
   const Main = () => {
     if (gameStarted) {
@@ -96,9 +91,18 @@ export default function Board() {
     <Box
       px={2}
       component={"main"}
-      sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+      sx={{
+        backgroundImage: `url("src/assets/background-board.png")`,
+        height: "100vh",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        flexGrow: 1,
+        p: 3,
+        width: { sm: `calc(100% - ${drawerWidth}px)` },
+      }}
     >
       <CustomAppBar />
+
       <Box height={64} />
       <Main />
     </Box>

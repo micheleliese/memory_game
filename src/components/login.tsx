@@ -13,14 +13,15 @@ export default function Login() {
   const { setPlayerName, joinGame } = useSocket();
 
   return (
-    <>
-      <Box
-        component={"img"}
-        src="src/assets/background.jpeg"
-        position="absolute"
-        width={"100%"}
-        height={"100%"}
-      />
+    <Box
+      sx={{
+        backgroundImage: `url("src/assets/background.jpeg")`,
+        height: "100%",
+        width: "100%",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <Grid
         container
         direction="row"
@@ -28,7 +29,7 @@ export default function Login() {
         alignItems="center"
       >
         <Grid item xs={12} md={4}>
-          <Card>
+          <Card sx={{ backgroundColor: 'violet', mt: 9}}>
             <CardContent>
               <Grid
                 container
@@ -37,7 +38,7 @@ export default function Login() {
                 justifyContent="center"
               >
                 <Grid item>
-                  <Typography variant="h4" textAlign="center">
+                  <Typography variant="h4" textAlign="center" color={'white'} fontWeight={'bold'}>
                     Entrar no jogo
                   </Typography>
                 </Grid>
@@ -63,6 +64,6 @@ export default function Login() {
           </Card>
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 }
