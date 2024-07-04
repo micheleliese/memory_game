@@ -7,8 +7,7 @@ import GameCard from "./game-card";
 
 export default function Board() {
   const { drawerWidth } = useDrawer();
-  const { isHost, gameStarted, gameBoard, players, startGame, flipCard } =
-    useSocket();
+  const { isHost, gameStarted, gameBoard, players, startGame, flipCard } = useSocket();
 
   const Main = () => {
     if (gameStarted) {
@@ -64,7 +63,7 @@ export default function Board() {
                   endIcon={<PlayArrow />}
                   disabled={players.length < 2}
                 >
-                  Start game
+                  Iniciar o Jogo
                 </Button>
               </Grid>
             </Grid>
