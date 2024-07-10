@@ -13,6 +13,9 @@ export interface SocketContextProps {
   ready: boolean;
   isHost: boolean;
   playerName: string;
+  isOpen: boolean;
+  message: string;
+  handleClose: () => void;
   setPlayerName: (name: string) => void;
   joinGame: () => void;
   startGame: () => void;
@@ -38,6 +41,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [isHost, setIsHost] = useState<boolean>(false);
   const [playerName, setPlayerName] = useState<string>("");
   const [cardsFlipped, setCardsFlipped] = useState<number>(0);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -84,11 +89,13 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     });
 
     socket.on("gameTied", (duplicates) => {
-      enqueueSnackbar(`Jogo Empatado entre ${duplicates.map((player: Player) => player.name).join(", ")}`,  { variant: "info" });
+      setIsOpen(true);
+      setMessage(`Jogo empatado entre ${duplicates.map((player: Player) => player.name).join(", ")}`);
     });
 
     socket.on("gameWon", (winner) => {
-      enqueueSnackbar(`Jogo ganho por ${winner.name}`, { variant: "success" });
+      setIsOpen(true);
+      setMessage(`Jogo ganho por ${winner.name}`);
     });
 
     return () => {
@@ -133,6 +140,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     }
   }
   
+  const handleClose = () => setIsOpen(false);
+
   return (
     <SocketContext.Provider
       value={{
@@ -142,6 +151,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         gameStarted,
         ready,
         playerName,
+        isOpen,
+        message,
+        handleClose,
         setPlayerName,
         joinGame,
         startGame,

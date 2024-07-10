@@ -49,9 +49,8 @@ export default function Board() {
               <Grid item>
                 <Typography variant="h6" textAlign="center">
                   {players.length === 1
-                    ? "Apenas você"
-                    : `Você e mais ${players.length - 1} jogadores`}
-                  estão no jogo
+                    ? "Apenas você está no jogo"
+                    : `Você e mais ${players.length - 1} jogadores estão no jogo`}
                 </Typography>
               </Grid>
               <Grid item>
