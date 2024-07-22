@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Select, Typography } from "@mui/material";
 import CustomAppBar from "./custom-app-bar";
 import { useDrawer } from "../providers/use-drawer";
 import { useSocket } from "../providers/use-socket";
@@ -7,7 +7,7 @@ import GameCard from "./game-card";
 
 export default function Board() {
   const { drawerWidth } = useDrawer();
-  const { isHost, gameStarted, gameBoard, players, startGame, flipCard } = useSocket();
+  const { isHost, gameStarted, gameBoard, players, cardOptions, selectedCardOption, setSelectedCardOption, startGame, flipCard } = useSocket();
 
   const Main = () => {
     if (gameStarted) {
@@ -54,13 +54,28 @@ export default function Board() {
                 </Typography>
               </Grid>
               <Grid item>
+                <Select
+                  fullWidth
+                  native
+                  variant="outlined"
+                  value={selectedCardOption}
+                  onChange={(event) => setSelectedCardOption(Number(event.target.value))}
+                >
+                  {cardOptions.map((option, index) => (
+                    <option key={index} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Select>
+              </Grid>
+              <Grid item>
                 <Button
                   variant="contained"
                   size="large"
                   onClick={startGame}
                   fullWidth
                   endIcon={<PlayArrow />}
-                  disabled={players.length < 2}
+                  disabled={players.length < 2 || selectedCardOption === 0}
                 >
                   Iniciar o Jogo
                 </Button>

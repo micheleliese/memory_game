@@ -5,6 +5,7 @@ import { MemoryCard } from "../interfaces/card";
 import { Player } from "../interfaces/player";
 import { Config } from "../config";
 import { useSnackbar } from "notistack";
+import { CardOption } from "../interfaces/card-option";
 
 export interface SocketContextProps {
   gameBoard: Array<MemoryCard>;
@@ -15,6 +16,9 @@ export interface SocketContextProps {
   playerName: string;
   isOpen: boolean;
   message: string;
+  cardOptions: Array<CardOption>
+  selectedCardOption: number;
+  setSelectedCardOption: (value: number) => void;
   handleClose: () => void;
   setPlayerName: (name: string) => void;
   joinGame: () => void;
@@ -43,6 +47,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [cardsFlipped, setCardsFlipped] = useState<number>(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+  const [cardOptions, setCardOptions] = useState<Array<CardOption>>([{ value: 0, label: "Selecione o número de cartas" }]);
+  const [selectedCardOption, setSelectedCardOption] = useState<number>(0);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -59,9 +65,11 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
     socket.on("players", (players) => {
       const isHost = players.find((player: Player) => player.id === socket.id)?.isHost;
+      const generatedCardOptions = generateCardOptions(players);
       setIsHost(isHost);
       setPlayers(players);
       setCardsFlipped(0);
+      setCardOptions([ cardOptions[0], ...generatedCardOptions]);
     });
 
     socket.on("startedGame", (gameBoard) => {
@@ -72,7 +80,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
     socket.on("playerLeft", (players) => {
       enqueueSnackbar("Um jogador saiu", { variant: "warning" });
+      const generatedCardOptions = generateCardOptions(players);
       setPlayers(players);
+      setCardOptions([ cardOptions[0], ...generatedCardOptions]);
     });
 
     socket.on("cardFlipped", ({ gameBoard, message, variant }) => {
@@ -122,7 +132,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
   const startGame = () => {
     console.log("Starting game");
-    socket.emit("startGame");
+    socket.emit("startGame", selectedCardOption );
   }
 
   const currentUser = () => players.find((player) => player.turn === true);
@@ -142,6 +152,16 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   
   const handleClose = () => setIsOpen(false);
 
+  const generateCardOptions = (players: Array<Player>) => {
+    const minValue = Math.pow(2, players.length);
+    const maxValue = 50;
+    const cardOptions = [];
+    for (let i = minValue; i <= maxValue; i += 4) {
+      cardOptions.push({ value: i, label: i.toString() });
+    }
+    return cardOptions;
+  }
+
   return (
     <SocketContext.Provider
       value={{
@@ -153,6 +173,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         playerName,
         isOpen,
         message,
+        cardOptions,
+        selectedCardOption,
+        setSelectedCardOption,
         handleClose,
         setPlayerName,
         joinGame,
