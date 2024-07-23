@@ -6,6 +6,7 @@ import { Player } from "../interfaces/player";
 import { Config } from "../config";
 import { useSnackbar } from "notistack";
 import { CardOption } from "../interfaces/card-option";
+import { publicIpv4 } from 'public-ip';
 
 export interface SocketContextProps {
   gameBoard: Array<MemoryCard>;
@@ -121,13 +122,19 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     };
   }, []);
 
-  const joinGame = () => {
-    if (!playerName) {
-      enqueueSnackbar("Por favor digite seu nome", { variant: "error" });
-      return;
+  const joinGame = async () => {
+    try {
+      if (!playerName) {
+        enqueueSnackbar("Por favor digite seu nome", { variant: "error" });
+        return;
+      }
+      const ip = await publicIpv4();
+      console.log(`Joining game as ${playerName} with ip ${ip}`);
+      socket.emit("joinGame", { playerName, ip: ip });
+    } catch (error) {
+      console.error(`Error joining game: ${error}`);
+      enqueueSnackbar(`Erro ao entrar no jogo: ${error}`, { variant: "error" });
     }
-    console.log("Joining game");
-    socket.emit("joinGame", playerName);
   };
 
   const startGame = () => {
