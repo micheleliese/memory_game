@@ -1,4 +1,4 @@
-import { Avatar, Box, Chip, Typography } from "@mui/material";
+import { Avatar, Box, ListItem, Typography } from "@mui/material";
 import { Player } from "../interfaces/player";
 
 interface PlayerCardProps {
@@ -6,47 +6,59 @@ interface PlayerCardProps {
 }
 
 export default function PlayerCard({ player }: PlayerCardProps) {
+
+  const getBackgroundColor = () => {
+    if (player.turn) {
+      return "rgba(255, 0, 0, 0.1)"
+    } else if (player.isHost) {
+      return "rgba(0, 0, 255, 0.1)"
+    } else if (!player.isActive) {
+      return "rgba(0, 0, 0, 0.1)"
+    } else {
+      return "transparent";
+    }
+  }
+
+  const getColor = () => {
+    if (player.turn) {
+      return "deeppink"
+    } else if (player.isHost) {
+      return "blue"
+    } else if (!player.isActive) {
+      return "gray"
+    } else {
+      return "black";
+    }
+  }
+
   return (
     <Box py={1}>
-      <Chip
-        key={player.id}
+      <ListItem
         sx={{
-          width: "100%",
-          padding: "0 8px",
-          color: player.turn ? "deeppink" : "default",
-          borderColor: player.turn ? "deeppink" : "default",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          backgroundColor: getBackgroundColor(),
+          color: getColor() 
         }}
-        variant="outlined"
-        avatar={
-          <Avatar
-            sx={{
-              backgroundColor: player.turn ? "deeppink" : "default",
-            }}
-          >
+      >
+        <Avatar
+          sx={{
+            backgroundColor: getColor(),
+          }}
+        >
           <Typography color={"white"} fontWeight={player.turn ? "bold" : "w100"}>
             {player.name[0]}
           </Typography>
-          </Avatar>
-        }
-        label={
-          <Box
-            px={3}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            <Typography variant="body1" fontWeight={player.turn ? "bold" : "w100"}>{player.name}</Typography>
-            <Box width={24} />
-            <Typography variant="body1" fontWeight={"bold"}>
-              {player.score}
-            </Typography>
-          </Box>
-        }
-      />
+        </Avatar>
+        <Typography variant="body1" fontWeight={player.turn ? "bold" : "w100"}>
+          {player.name}
+        </Typography>
+        <Typography variant="body1" fontWeight={"bold"}>
+          {player.score}
+        </Typography>
+      </ListItem>
     </Box>
   );
 }

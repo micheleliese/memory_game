@@ -14,7 +14,7 @@ export default function CustomDrawer() {
           <Typography variant="h5">Jogadores</Typography>
         </Toolbar>
       </AppBar>
-      <Box px={2} py={2}>
+      <Box>
         {players.map((player, index) => (
           <PlayerCard key={index} player={player} />
         ))}
