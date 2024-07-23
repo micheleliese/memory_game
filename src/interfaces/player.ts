@@ -4,4 +4,6 @@ export interface Player {
   score: number;
   turn: boolean;
   isHost: boolean;
+  ip: string;
+  isActive: boolean;
 }
