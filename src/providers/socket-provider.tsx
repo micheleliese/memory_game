@@ -8,6 +8,11 @@ import { useSnackbar } from "notistack";
 import { CardOption } from "../interfaces/card-option";
 import { publicIpv4 } from 'public-ip';
 
+export interface Round {
+  currentRound: number;
+  maxRounds: number;
+}
+
 export interface SocketContextProps {
   gameBoard: Array<MemoryCard>;
   players: Array<Player>;
@@ -15,12 +20,15 @@ export interface SocketContextProps {
   ready: boolean;
   isHost: boolean;
   playerName: string;
+  round: Round;
   isOpen: boolean;
+  isOpenFinishDialog: boolean;
   message: string;
   cardOptions: Array<CardOption>
   selectedCardOption: number;
   setSelectedCardOption: (value: number) => void;
   handleClose: () => void;
+  handleCloseFinishDialog: () => void;
   setPlayerName: (name: string) => void;
   joinGame: () => void;
   startGame: () => void;
@@ -46,7 +54,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [isHost, setIsHost] = useState<boolean>(false);
   const [playerName, setPlayerName] = useState<string>("");
   const [cardsFlipped, setCardsFlipped] = useState<number>(0);
+  const [round, setRound] = useState<Round>({ currentRound: 0, maxRounds: 0 });
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpenFinishDialog, setIsOpenFinishDialog] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [cardOptions, setCardOptions] = useState<Array<CardOption>>([{ value: 0, label: "Selecione o número de cartas" }]);
   const [selectedCardOption, setSelectedCardOption] = useState<number>(0);
@@ -97,6 +107,14 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       enqueueSnackbar("Jogo Encerrado", { variant: "error" });
       setGameStarted(false);
       setReady(false);
+    });
+
+    socket.on("gameFinished", () => {
+      setIsOpenFinishDialog(true);
+    });
+
+    socket.on("round", (round) => {
+      setRound(round);
     });
 
     socket.on("gameTied", (duplicates) => {
@@ -159,6 +177,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   
   const handleClose = () => setIsOpen(false);
 
+  const handleCloseFinishDialog = () => setIsOpenFinishDialog(false);
+
   const generateCardOptions = (players: Array<Player>) => {
     const minValue = Math.pow(2, players.length);
     const maxValue = 50;
@@ -178,12 +198,15 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         gameStarted,
         ready,
         playerName,
+        round,
         isOpen,
+        isOpenFinishDialog,
         message,
         cardOptions,
         selectedCardOption,
         setSelectedCardOption,
         handleClose,
+        handleCloseFinishDialog,
         setPlayerName,
         joinGame,
         startGame,

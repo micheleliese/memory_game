@@ -6,4 +6,5 @@ export interface Player {
   isHost: boolean;
   ip: string;
   isActive: boolean;
+  victories: number;
 }

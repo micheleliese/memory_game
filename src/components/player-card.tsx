@@ -6,30 +6,29 @@ interface PlayerCardProps {
 }
 
 export default function PlayerCard({ player }: PlayerCardProps) {
-
   const getBackgroundColor = () => {
     if (player.turn) {
-      return "rgba(255, 0, 0, 0.1)"
+      return "rgba(255, 0, 0, 0.1)";
     } else if (player.isHost) {
-      return "rgba(0, 0, 255, 0.1)"
+      return "rgba(0, 0, 255, 0.1)";
     } else if (!player.isActive) {
-      return "rgba(0, 0, 0, 0.1)"
+      return "rgba(0, 0, 0, 0.1)";
     } else {
       return "transparent";
     }
-  }
+  };
 
   const getColor = () => {
     if (player.turn) {
-      return "deeppink"
+      return "deeppink";
     } else if (player.isHost) {
-      return "blue"
+      return "blue";
     } else if (!player.isActive) {
-      return "gray"
+      return "gray";
     } else {
       return "black";
     }
-  }
+  };
 
   return (
     <Box py={1}>
@@ -40,7 +39,7 @@ export default function PlayerCard({ player }: PlayerCardProps) {
           justifyContent: "space-between",
           alignItems: "center",
           backgroundColor: getBackgroundColor(),
-          color: getColor() 
+          color: getColor(),
         }}
       >
         <Avatar
@@ -48,16 +47,43 @@ export default function PlayerCard({ player }: PlayerCardProps) {
             backgroundColor: getColor(),
           }}
         >
-          <Typography color={"white"} fontWeight={player.turn ? "bold" : "w100"}>
+          <Typography
+            color={"white"}
+            fontWeight={player.turn ? "bold" : "w100"}
+          >
             {player.name[0]}
           </Typography>
         </Avatar>
-        <Typography variant="body1" fontWeight={player.turn ? "bold" : "w100"}>
+        <Typography
+          variant="body1"
+          fontWeight={player.turn ? "bold" : "w100"}
+          textOverflow={"ellipsis"}
+        >
           {player.name}
         </Typography>
         <Typography variant="body1" fontWeight={"bold"}>
           {player.score}
         </Typography>
+        {player.victories > 0 ? (
+          <Box
+            mx={1}
+            display={"flex"}
+            flexDirection={"row"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <Typography variant="body1" fontWeight={"bold"}>
+              {player.victories}x
+            </Typography>
+            <Box
+              ml={1}
+              component={"img"}
+              src={"src/assets/champion_icon.png"}
+              height={24}
+              width={24}
+            />
+          </Box>
+        ) : null}
       </ListItem>
     </Box>
   );
