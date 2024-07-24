@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
@@ -45,17 +46,11 @@ export default function RoundDialog({
           <DialogContentText variant="h6">{message}</DialogContentText>
         </Box>
       </DialogContent>
-      <Box
-        display={"flex"}
-        flexDirection={"column"}
-        justifyContent={"center"}
-        alignItems={"center"}
-      >
-        <Button variant="contained" onClick={handleClose}>
+      <DialogActions>
+        <Button fullWidth variant="contained" onClick={handleClose}>
           Fechar e continuar
         </Button>
-      </Box>
-      <Box height={16} />
+      </DialogActions>
     </Dialog>
   );
 }

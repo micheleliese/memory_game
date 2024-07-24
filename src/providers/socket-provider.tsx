@@ -29,6 +29,7 @@ export interface SocketContextProps {
   setSelectedCardOption: (value: number) => void;
   handleClose: () => void;
   handleCloseFinishDialog: () => void;
+  playAgain: () => void;
   setPlayerName: (name: string) => void;
   joinGame: () => void;
   startGame: () => void;
@@ -177,7 +178,17 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   
   const handleClose = () => setIsOpen(false);
 
-  const handleCloseFinishDialog = () => setIsOpenFinishDialog(false);
+  const handleCloseFinishDialog = () => {
+    setIsOpenFinishDialog(false);
+    setGameStarted(false);
+    setReady(false);
+  }
+
+  const playAgain = () => { 
+    setIsOpenFinishDialog(false); 
+    setGameStarted(false);
+    setReady(true);
+  }
 
   const generateCardOptions = (players: Array<Player>) => {
     const minValue = Math.pow(2, players.length);
@@ -207,6 +218,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         setSelectedCardOption,
         handleClose,
         handleCloseFinishDialog,
+        playAgain,
         setPlayerName,
         joinGame,
         startGame,

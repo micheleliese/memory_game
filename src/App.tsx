@@ -7,7 +7,7 @@ import RoundDialog from "./components/round-dialog";
 import FinishDialog from "./components/finish-dialog";
 
 export default function App() {
-  const { ready, isOpen, isOpenFinishDialog, handleClose, handleCloseFinishDialog, message, players } = useSocket();
+  const { ready, isOpen, isOpenFinishDialog, handleClose, handleCloseFinishDialog, playAgain, message, players } = useSocket();
 
   return (
     <>
@@ -31,6 +31,7 @@ export default function App() {
       <FinishDialog
         isOpen={isOpenFinishDialog}
         handleClose={handleCloseFinishDialog}
+        playAgain={playAgain}
         players={players}
       />
     </>
