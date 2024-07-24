@@ -9,8 +9,6 @@ export default function PlayerCard({ player }: PlayerCardProps) {
   const getBackgroundColor = () => {
     if (player.turn) {
       return "rgba(255, 0, 0, 0.1)";
-    } else if (player.isHost) {
-      return "rgba(0, 0, 255, 0.1)";
     } else if (!player.isActive) {
       return "rgba(0, 0, 0, 0.1)";
     } else {
@@ -19,7 +17,7 @@ export default function PlayerCard({ player }: PlayerCardProps) {
   };
 
   const getColor = () => {
-    if (player.turn) {
+    if (player.turn && !player.isHost){
       return "deeppink";
     } else if (player.isHost) {
       return "blue";
@@ -40,6 +38,8 @@ export default function PlayerCard({ player }: PlayerCardProps) {
           alignItems: "center",
           backgroundColor: getBackgroundColor(),
           color: getColor(),
+          borderColor: player.isHost ? "blue" : "transparent",
+          border: player.isHost ? "1px solid" : null
         }}
       >
         <Avatar
