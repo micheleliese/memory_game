@@ -14,9 +14,9 @@ import { useSocket } from "../providers/use-socket";
 
 export default function CustomAppBar() {
   const { handleDrawerToggle, drawerWidth } = useDrawer();
-  const { myUser, isMyTurn, currentUser, gameStarted } = useSocket();
   const matches = useMediaQuery('(max-width:600px)');
-  
+  const { myUser, isMyTurn, currentUser, gameStarted } = useSocket();
+
   return (
     <AppBar
       position="fixed"
@@ -35,7 +35,7 @@ export default function CustomAppBar() {
             width: "100%",
           }}
         >
-          <Typography variant={matches ? "body1" : "h6"} fontWeight='bold'>Jogo da Memória</Typography>
+          <Typography variant={matches ? "body1" : "h6"} fontWeight='bold'>Jogo da Memória </Typography>
           <Typography variant={matches ? "body1" : "h6"} fontWeight='bold' color='white'>{myUser()?.name}</Typography>
           {gameStarted ? (
             <Card sx={{

@@ -54,16 +54,18 @@ export default function FinishDialog({ isOpen, handleClose, playAgain, players }
   const TiedComponent = () => {
     return (
       <Stack
-        direction="row"
+        direction="column"
         spacing={2}
         justifyContent="center"
         alignItems="center"
       >
-        <Avatar sx={{ width: avatarSize, height: avatarSize, backgroundColor: "deeppink" }}>
-          <Typography color="white" fontWeight="bold" textAlign="center">
-            {winners[0]?.name}
-          </Typography>
-        </Avatar>
+        {winners.map((winner, index) => {
+          return <Avatar key={index} sx={{ width: avatarSize, height: avatarSize, backgroundColor: "deeppink" }}>
+            <Typography color="white" fontWeight="bold" textAlign="center">
+              {winner?.name}
+            </Typography>
+          </Avatar>
+        })}
         <Box
           ml={1}
           component={"img"}
@@ -71,11 +73,6 @@ export default function FinishDialog({ isOpen, handleClose, playAgain, players }
           height={iconSize}
           width={iconSize}
         />
-        <Avatar sx={{ width: avatarSize, height: avatarSize }}>
-          <Typography color="white" fontWeight="bold" textAlign="center">
-            {winners[1]?.name}
-          </Typography>
-        </Avatar>
       </Stack>
     );
   };
@@ -94,7 +91,7 @@ export default function FinishDialog({ isOpen, handleClose, playAgain, players }
         >
           {winners.length === 1 ? <WinnerComponent /> : <TiedComponent />}
           <Box height={24} />
-          {players.sort((a, b) => b.score - a.score).map((player, index) => (
+          {players.sort((a, b) => b.acumulatedScore - a.acumulatedScore).map((player, index) => (
             <ListItem
               key={index}
               sx={{
@@ -105,7 +102,7 @@ export default function FinishDialog({ isOpen, handleClose, playAgain, players }
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-                backgroundColor: index % 2 === 0 ? "rgba(255, 0, 0, 0.1)" : "white",
+                backgroundColor: index % 2 === 0 ? "rgba(245, 245, 245, 1)" : "white",
                 borderRadius: 8,
               }}
             >

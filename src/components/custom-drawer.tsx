@@ -5,7 +5,7 @@ import { useSocket } from "../providers/use-socket";
 
 export default function CustomDrawer() {
   const { drawerWidth, mobileOpen, handleDrawerClose, handleDrawerTransitionEnd } = useDrawer();
-  const { players } = useSocket();
+  const { players, round } = useSocket();
 
   const drawerContent = (
     <Box bgcolor="white" height="100%">
@@ -13,6 +13,9 @@ export default function CustomDrawer() {
         <Toolbar>
           <Typography variant="h5">Jogadores</Typography>
         </Toolbar>
+        <Box px={3} pb={1}>
+          <Typography variant="body1">Round: {round.currentRound} / {round.maxRounds}</Typography>
+        </Box>
       </AppBar>
       <Box>
         {players.map((player, index) => (
