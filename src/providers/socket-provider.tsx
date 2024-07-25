@@ -186,6 +186,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   }
 
   const playAgain = () => { 
+    socket.emit("playAgain");
     setIsOpenFinishDialog(false); 
     setGameStarted(false);
     setReady(true);

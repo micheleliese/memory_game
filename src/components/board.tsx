@@ -75,7 +75,7 @@ export default function Board() {
                   onClick={startGame}
                   fullWidth
                   endIcon={<PlayArrow />}
-                  disabled={players.length < 2 || selectedCardOption === 0}
+                  disabled={players.length < 2 || selectedCardOption === 0 || players.filter((player) => player.isReady).length < 2}
                 >
                   Iniciar o Jogo
                 </Button>

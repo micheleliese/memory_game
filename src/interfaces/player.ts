@@ -8,4 +8,5 @@ export interface Player {
   ip: string;
   isActive: boolean;
   victories: number;
+  isReady: boolean;
 }
