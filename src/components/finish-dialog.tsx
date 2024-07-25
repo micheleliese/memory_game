@@ -8,9 +8,11 @@ import {
   DialogTitle,
   Grid,
   ListItem,
+  Stack,
   Typography,
 } from "@mui/material";
 import { Player } from "../interfaces/player";
+import { useSocket } from "../providers/use-socket";
 
 interface FinishDialogProps {
   isOpen: boolean;
@@ -19,12 +21,12 @@ interface FinishDialogProps {
   players: Array<Player>;
 }
 
-export default function FinishDialog({
-  isOpen,
-  handleClose,
-  playAgain,
-  players,
-}: FinishDialogProps) {
+export default function FinishDialog({ isOpen, handleClose, playAgain, players }: FinishDialogProps) {
+  const { getWinner } = useSocket();
+  const winner = getWinner();
+  const avatarSize = 96;
+  const iconSize = avatarSize * 0.75; 
+  
   return (
     <Dialog open={isOpen} onClose={handleClose} maxWidth={"md"} fullWidth>
       <DialogTitle variant="h5" fontWeight={"bold"} textAlign={"center"}>
@@ -37,9 +39,22 @@ export default function FinishDialog({
           justifyContent={"center"}
           alignItems={"stretch"}
         >
-          {players
-            .sort((a, b) => b.score - a.score)
-            .map((player, index) => (
+          <Stack direction="column" spacing={2} justifyContent="center" alignItems="center">
+            <Avatar
+              sx={{ width: avatarSize, height: avatarSize }}
+            >
+              <Typography color={"white"}>{winner?.name}</Typography>
+            </Avatar>
+            <Box
+              ml={1}
+              component={"img"}
+              src={"src/assets/champion_icon.png"}
+              height={iconSize}
+              width={iconSize}
+            />
+          </Stack>
+          <Box height={24} />
+          {players.sort((a, b) => b.score - a.score).map((player, index) => (
               <ListItem
                 key={index}
                 sx={{
@@ -61,18 +76,7 @@ export default function FinishDialog({
                   {player.name}
                 </Typography>
                 <Typography variant="body1" fontWeight={"bold"}>
-                  {player.victories === 0
-                    ? 0
-                    : [...Array(player.victories)].map((_, index) => (
-                        <Box
-                          ml={1}
-                          key={index}
-                          component={"img"}
-                          src={"src/assets/champion_icon.png"}
-                          height={32}
-                          width={32}
-                        />
-                      ))}
+                  {player.acumulatedScore}
                 </Typography>
               </ListItem>
             ))}
