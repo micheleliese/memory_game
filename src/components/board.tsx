@@ -9,6 +9,18 @@ export default function Board() {
   const { drawerWidth } = useDrawer();
   const { isHost, gameStarted, gameBoard, players, cardOptions, selectedCardOption, setSelectedCardOption, startGame, flipCard } = useSocket();
 
+  const a = players.length < 2;
+  const b = selectedCardOption === 0;
+  const c = players.some((player) => player.isReady === false && player.isActive === true);
+  const disabled = a || b || c;
+
+  console.log("==================================================================================");
+  console.log(a);
+  console.log(b);
+  console.log(c);
+  console.log(disabled);
+  console.log("==================================================================================");
+
   const Main = () => {
     if (gameStarted) {
       return (
@@ -75,7 +87,7 @@ export default function Board() {
                   onClick={startGame}
                   fullWidth
                   endIcon={<PlayArrow />}
-                  disabled={players.length < 2 || selectedCardOption === 0 || players.filter((player) => player.isReady).length < 2}
+                  disabled={disabled}
                 >
                   Iniciar o Jogo
                 </Button>
