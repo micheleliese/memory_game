@@ -35,7 +35,7 @@ export default function FinishDialog({ isOpen, handleClose, playAgain, players }
         justifyContent="center"
         alignItems="center"
       >
-        <Avatar sx={{ width: avatarSize, height: avatarSize }}>
+        <Avatar sx={{ width: avatarSize, height: avatarSize, backgroundColor: "deeppink" }}>
           <Typography color="white" fontWeight="bold" textAlign="center">
             {winners[0]?.name}
           </Typography>
@@ -59,7 +59,7 @@ export default function FinishDialog({ isOpen, handleClose, playAgain, players }
         justifyContent="center"
         alignItems="center"
       >
-        <Avatar sx={{ width: avatarSize, height: avatarSize }}>
+        <Avatar sx={{ width: avatarSize, height: avatarSize, backgroundColor: "deeppink" }}>
           <Typography color="white" fontWeight="bold" textAlign="center">
             {winners[0]?.name}
           </Typography>
@@ -105,7 +105,7 @@ export default function FinishDialog({ isOpen, handleClose, playAgain, players }
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-                backgroundColor: index % 2 === 0 ? "#f5f5f5" : "white",
+                backgroundColor: index % 2 === 0 ? "rgba(255, 0, 0, 0.1)" : "white",
                 borderRadius: 8,
               }}
             >
