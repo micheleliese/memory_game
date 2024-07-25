@@ -37,6 +37,7 @@ export interface SocketContextProps {
   flipCard: (index: number) => void;
   currentUser: () => Player | undefined;
   myUser(): Player | undefined;
+  getWinner(): Player;
 }
 
 export const SocketContext = createContext<SocketContextProps | undefined>(undefined);
@@ -200,6 +201,30 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     return cardOptions;
   }
 
+  const findDuplicates = (arr: Array<Player>) => {
+    const sorted_arr = arr.slice().sort();
+    const results = [];
+    for (let i = 0; i < sorted_arr.length - 1; i++) {
+      if (sorted_arr[i + 1].victories === sorted_arr[i].victories) {
+        results.push(sorted_arr[i]);
+      }
+    }
+    return results;
+  }
+  
+  const getWinner = () => {
+    let winner = null;
+    const playersWithVictories = players.filter((player) => player.victories > 0);
+    const playerWithMaxVictories = playersWithVictories.sort((a, b) => b.victories - a.victories)[0];
+    const duplicates = findDuplicates(playersWithVictories);
+    if (duplicates.length === 0) {
+      winner = playerWithMaxVictories;
+    } else {
+      winner = duplicates.sort((a, b) => b.acumulatedScore - a.acumulatedScore)[0];
+    }
+    return winner;
+  }
+
   return (
     <SocketContext.Provider
       value={{
@@ -225,7 +250,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         isMyTurn,
         flipCard,
         currentUser,
-        myUser
+        myUser,
+        getWinner
       }}
     >
       {children}
