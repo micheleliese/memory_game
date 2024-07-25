@@ -37,7 +37,7 @@ export interface SocketContextProps {
   flipCard: (index: number) => void;
   currentUser: () => Player | undefined;
   myUser(): Player | undefined;
-  getWinner(): Player;
+  getWinners(): Array<Player>;
 }
 
 export const SocketContext = createContext<SocketContextProps | undefined>(undefined);
@@ -205,24 +205,24 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     const sorted_arr = arr.slice().sort();
     const results = [];
     for (let i = 0; i < sorted_arr.length - 1; i++) {
-      if (sorted_arr[i + 1].victories === sorted_arr[i].victories) {
+      if ((sorted_arr[i + 1].victories === sorted_arr[i].victories) && (sorted_arr[i + 1].acumulatedScore === sorted_arr[i].acumulatedScore)) {
         results.push(sorted_arr[i]);
       }
     }
     return results;
   }
   
-  const getWinner = () => {
-    let winner = null;
+  const getWinners = () => {
+    let winners = [];
     const playersWithVictories = players.filter((player) => player.victories > 0);
     const playerWithMaxVictories = playersWithVictories.sort((a, b) => b.victories - a.victories)[0];
     const duplicates = findDuplicates(playersWithVictories);
-    if (duplicates.length === 0) {
-      winner = playerWithMaxVictories;
+    if (duplicates.length === 0 && playerWithMaxVictories) {
+      winners.push(playerWithMaxVictories)
     } else {
-      winner = duplicates.sort((a, b) => b.acumulatedScore - a.acumulatedScore)[0];
+      winners = duplicates;
     }
-    return winner;
+    return winners;
   }
 
   return (
@@ -251,7 +251,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         flipCard,
         currentUser,
         myUser,
-        getWinner
+        getWinners
       }}
     >
       {children}
