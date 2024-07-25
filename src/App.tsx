@@ -28,12 +28,12 @@ export default function App() {
         message={message}
       />
 
-      <FinishDialog
+      {isOpenFinishDialog && <FinishDialog
         isOpen={isOpenFinishDialog}
         handleClose={handleCloseFinishDialog}
         playAgain={playAgain}
         players={players}
-      />
+      />}
     </>
   );
 }
