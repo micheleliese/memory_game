@@ -14,11 +14,7 @@ interface RoundDialogProps {
   message: string;
 }
 
-export default function RoundDialog({
-  isOpen,
-  handleClose,
-  message,
-}: RoundDialogProps) {
+export default function RoundDialog({ isOpen, handleClose, message }: RoundDialogProps) {
   return (
     <Dialog open={isOpen} onClose={handleClose} maxWidth={"sm"} fullWidth>
       <DialogTitle variant="h5" fontWeight={"bold"} textAlign={"center"}>

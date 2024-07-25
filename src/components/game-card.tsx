@@ -26,6 +26,7 @@ export default function GameCard({ card, onClick }: GameCardProps) {
             image={`src/assets/cards/backcard.jpg`}
             alt="backcard"
           />
+          {card.imageId}
         </Card>
       </ReactCardFlip>
     </Grid>

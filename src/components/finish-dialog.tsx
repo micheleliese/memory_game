@@ -23,7 +23,7 @@ interface FinishDialogProps {
 
 export default function FinishDialog({ isOpen, handleClose, playAgain, players }: FinishDialogProps) {
   const { getWinners } = useSocket();
-  const winners = getWinners();
+  const winners = getWinners(players);
   const avatarSize = 96;
   const iconSize = avatarSize * 0.75;
 
