@@ -11,10 +11,10 @@ export default function CustomDrawer() {
     <Box bgcolor="white" height="100%">
       <AppBar position="sticky" color="transparent" elevation={1}>
         <Toolbar>
-          <Typography variant="h5">Jogadores</Typography>
+          <Typography variant="h5" color="#f50057" fontWeight="bold">Jogadores</Typography>
         </Toolbar>
         <Box px={3} pb={1}>
-          <Typography variant="body1">Round: {round.currentRound} / {round.maxRounds}</Typography>
+          <Typography variant="body1" color="#f50057" fontWeight="bold">Round: {round.currentRound} / {round.maxRounds}</Typography>
         </Box>
       </AppBar>
       <Box>
