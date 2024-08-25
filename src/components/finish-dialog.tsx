@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Avatar,
   Box,
@@ -13,6 +14,7 @@ import {
 } from "@mui/material";
 import { Player } from "../interfaces/player";
 import { useSocket } from "../providers/use-socket";
+import { useMemo } from "react";
 
 interface FinishDialogProps {
   isOpen: boolean;
@@ -23,9 +25,16 @@ interface FinishDialogProps {
 
 export default function FinishDialog({ isOpen, handleClose, playAgain, players }: FinishDialogProps) {
   const { getWinners } = useSocket();
-  const winners = getWinners(players);
   const avatarSize = 96;
   const iconSize = avatarSize * 0.75;
+
+  const sortedPlayers = useMemo(() => {
+    return players.sort((a, b) => b.acumulatedScore - a.acumulatedScore);
+  }, []);
+
+  const winners = useMemo(() => {
+    return getWinners(players);
+  }, []);
 
   const WinnerComponent = () => {
     return (
@@ -91,7 +100,7 @@ export default function FinishDialog({ isOpen, handleClose, playAgain, players }
         >
           {winners.length === 1 ? <WinnerComponent /> : <TiedComponent />}
           <Box height={24} />
-          {players.sort((a, b) => b.acumulatedScore - a.acumulatedScore).map((player, index) => (
+          {sortedPlayers.map((player, index) => (
             <ListItem
               key={index}
               sx={{
