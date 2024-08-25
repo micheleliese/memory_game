@@ -112,6 +112,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     });
 
     socket.on("gameFinished", () => {
+      setRound({ currentRound: 0, maxRounds: 0 });
       setIsOpenFinishDialog(true);
     });
 
